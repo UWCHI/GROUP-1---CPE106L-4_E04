@@ -1,8 +1,5 @@
 # WELCOME!
 
-**GROUP 1 MEMBERS:**
+**I AM UCHI!**
 
-John Simon G. Dominguez  
-Jersey Carlisle C. Estrella  
-Nathaniel Joseph C. Reynoso  
-Mark Lester C. Uchi
+AND IN THIS BRANCH, YOU CAN FIND MY INDIVIDUAL OUTPUT
