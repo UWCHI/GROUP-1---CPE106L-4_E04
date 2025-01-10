@@ -1,4 +1,6 @@
 # WELCOME!
 
 **DOMINGUEZ, JOHN SIMON G.**
-This is my output for sample problem 1 and problem 2 
+THIS IS FOR CPE106L-4
+E04
+
