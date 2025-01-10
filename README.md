@@ -1,9 +1,3 @@
 # WELCOME!
 
-======= ESTRELLA
-I am Jersey Carlisle C. Estrella
-In this branch, you may see my individual output/s
-=======
-**DOMINGUEZ, JOHN SIMON G.**
-This is my output for sample problem 1 and problem 2 
-======= main
+Hey there! I am ESTRELLA. This branch is where you may find my individual outputs for CPE106L-4
