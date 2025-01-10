@@ -1,4 +1,4 @@
 # WELCOME!
 
-I am Nathaniel Joseph C. Reynoso and this is my output for our GitHub collaborations.
+I am Nathaniel Joseph C. Reynoso and this is the branch for my outputs on our GitHub collaborations.
 
