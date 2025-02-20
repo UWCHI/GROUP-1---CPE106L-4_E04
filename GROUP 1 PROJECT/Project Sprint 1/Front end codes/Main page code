@@ -1,1 +1,138 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Lost & Found</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: #550000;
+            color: #212529;
+            font-family: 'Times New Roman', serif;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+            overflow-y: auto;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            background-color: #f2f2f2;
+            color: black;
+            padding: 10px 0;
+            text-align: center;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header img {
+            max-width: 100px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        main {
+            padding-top: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding-bottom: 50px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        section {
+            padding: 20px;
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        input, textarea, button {
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: white;
+            color: black;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border: 1px solid black;
+        }
+        button:hover {
+            background-color: #d83612;
+            color: white;
+        }
+        footer {
+            text-align: center;
+            padding: 1px;
+            background-color: #343a40;
+            color: white;
+            margin-top: 20px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="https://w7.pngwing.com/pngs/231/56/png-transparent-mapua-cardinals-mapua-university-ateneo-blue-eagles-st-louis-cardinals-philippine-collegiate-champions-league-basketball-logo-fictional-character-sports.png" alt="Lost & Found Logo">
+        <h1>Campus Lost & Found</h1>
+    </header>
+    
+    <main>
+        <section id="found-items">
+            <h2>Found Items</h2>
+            <div class="items-grid">
+                <!-- Dynamically loaded found items will be listed here -->
+            </div>
+        </section>
+        
+        <section id="search">
+            <h2>Search for an Item</h2>
+            <input type="text" id="search-box" placeholder="Enter item details...">
+            <button onclick="searchItems()">Search</button>
+            <div id="search-results"></div>
+        </section>
+        
+        <section id="report">
+            <h2>File a Missing Item Report</h2>
+            <form id="report-form">
+                <label for="item-name">Item Name:</label>
+                <input type="text" id="item-name" required>
+                
+                <label for="description">Description:</label>
+                <textarea id="description" required></textarea>
+                
+                <label for="contact">Your Contact Info:</label>
+                <input type="text" id="contact" required>
+                
+                <button type="submit">Submit Report</button>
+            </form>
+        </section>
+        
+        <section id="admin">
+            <h2>Admin Panel</h2>
+            <p>Restricted access for Lost & Found office staff to manage item records.</p>
+            <button>Login</button>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 Campus Lost & Found. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
