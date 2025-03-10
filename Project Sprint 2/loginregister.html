@@ -1,0 +1,189 @@
+<header>
+    <img src="https://i.imgur.com/YIPQUaT.png" alt="Lost & Found Logo" style="width: 1500px; height: auto;">
+</header>
+ 
+<!-- Login & Register Section -->
+<div class="auth-container">
+        <div class="auth-toggle">
+        <button id="login-btn" class="active" onclick="showLogin()">Signup</button>
+        <button id="register-btn" onclick="showRegister()">Register</button>
+    </div>
+    <div id="login-form" class="auth-form">
+        <h2>Login to Dashboard</h2>
+        <input type="email" id="login-email" placeholder="Email" required>
+        <input type="password" id="login-password" placeholder="Password" required>
+        <button onclick="login()">Log in</button>
+    </div>
+      
+
+
+    <div id="register-form" class="auth-form hidden">
+        <h2>Create an Account</h2>
+        <input type="text" id="student-number" placeholder="Student Number" required>
+        <select id="department">
+            <option value="">Select Department | Strand</option>
+            <option value="SOIT">SOIT</option>
+            <option value="ETYSBM">ETYSBM</option>
+            <option value="ARIDBE">ARIDBE</option>
+        </select>
+        <select id="user-level">
+            <option value="">Select User Level</option>
+            <option value="User">4th Year</option>
+            <option value="User">3rd Year</option>
+            <option value="User">2nd Year</option>
+            <option value="User">1st Year</option>
+            <option value="User">Grade 12</option>
+            <option value="User">Grade 11</option>
+        </select>
+        <input type="text" id="first-name" placeholder="First Name" required>
+        <input type="text" id="middle-initial" placeholder="M.I.">
+        <input type="text" id="last-name" placeholder="Last Name" required>
+        <input type="text" id="suffix" placeholder="Suffix (Optional)">
+        <input type="email" id="school-email" placeholder="School Email" required>
+        <input type="password" id="register-password" placeholder="Password" required>
+        <input type="password" id="confirm-password" placeholder="Confirm Password" required>
+        <button onclick="register()">Register</button>
+    </div>
+</div>
+
+<!-- JavaScript for Login/Register Toggle -->
+<script>
+    function showLogin() {
+        document.getElementById('login-form').classList.remove('hidden');
+        document.getElementById('register-form').classList.add('hidden');
+        document.getElementById('login-btn').classList.add('active');
+        document.getElementById('register-btn').classList.remove('active');
+    }
+    
+    function showRegister() {
+        document.getElementById('login-form').classList.add('hidden');
+        document.getElementById('register-form').classList.remove('hidden');
+        document.getElementById('register-btn').classList.add('active');
+        document.getElementById('login-btn').classList.remove('active');
+    }
+
+    function login() {
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        if (email === "admin@mapua.edu.ph" && password === "admin123") {
+            window.location.href = "index.html";
+        } else {
+            alert("Invalid login credentials");
+        }
+    }
+
+    function register() {
+        const password = document.getElementById('register-password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+        if (password !== confirmPassword) {
+            alert("Passwords do not match!");
+            return;
+        }
+        alert("Registration successful!");
+        
+    }
+    function toggleAuth(type) {
+    const signupBtn = document.getElementById("signupBtn");
+    const registerBtn = document.getElementById("registerBtn");
+    const slider = document.querySelector(".toggle-slider");
+
+    if (type === "signup") {
+        slider.style.left = "0%";
+        signupBtn.classList.add("active");
+        registerBtn.classList.remove("active");
+    } else {
+        slider.style.left = "50%";
+        registerBtn.classList.add("active");
+        signupBtn.classList.remove("active");
+    }
+}
+
+</script>
+
+<!-- Styling for the auth forms -->
+<style>   
+    header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 30vh; 
+    }
+
+    .logo {
+        width: 250px; 
+        height: auto;
+    }
+    
+    body {
+        background-color: #1f1f1f; 
+        font-family: Arial, sans-serif;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .auth-container {
+        text-align: center;
+        margin-top: 80px;
+        background-color: #353535;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        width: 400px;
+        align-self: flex-start;
+        margin-left: 953px;
+    }
+footer {
+    position: relative;
+    bottom: 10px;
+    left: -31px;
+    margin-top: 1%;
+    text-align: left;
+    width: auto;
+}
+    .auth-toggle {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    .auth-toggle button {
+        padding: 10px 20px;
+        border: 2px solid #550000;
+        background: white;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    .auth-toggle .active {
+        background: #d83612;
+        color: white;
+    }
+    .auth-form input, .auth-form select, .auth-form button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .auth-form button {
+        background-color: #d83612;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+    .auth-form button: {
+        background-color: #550000;
+    }
+    .hidden {
+        display: none;
+    }
+</style>
+
+    <footer>
+        <p>&copy; 2025 Cardinal Lost & Found. All Rights Reserved.</p> 
+    </footer>
