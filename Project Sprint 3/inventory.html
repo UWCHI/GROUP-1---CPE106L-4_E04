@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Lost Items - Campus Lost & Found</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script> <!-- Replace 'your-kit-id' with your actual Font Awesome Kit ID -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #141414;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden; /* Remove horizontal scrollbar */
+        }
+
+        /* NAVIGATION */
+        .sidebar {
+            width: 200px; /* Thinner width */
+            background: #1f1f1f;
+            height: 100vh;
+            padding-top: 20px;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding-left: 20px;
+            transition: width 0.3s;
+            z-index: 1; /* Ensure the sidebar is above the footer */
+        }
+
+        .sidebar img {
+            max-width: 100px;
+            margin-bottom: 20px;
+        }
+
+        .nav-item {
+            width: 100%;
+            text-align: left;
+            padding: 15px 0;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-item img {
+            width: 20px; /* Smaller size */
+            height: 20px; /* Smaller size */
+            margin-right: 10px;
+            vertical-align: middle; /* Align icon with text */
+            margin-top: 15px; /* Move the icon lower */
+        }
+
+        .nav-item a {
+            color: white;
+            text-decoration: none;
+            font-size: 20px; /* Increased font size */
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-item:hover {
+            background: #E50914;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            margin-left: 200px; /* Adjusted margin to match new sidebar width */
+            padding: 0;
+            width: calc(100% - 200px); /* Adjusted width to match new sidebar width */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+        .dashboard-header {
+            background: #252321;
+            padding: 40px; /* Made header thicker */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            text-align: left;
+            padding-left: calc(5% + 50px); /* Added more padding to move text to the right */
+            width: 100%;
+            margin: 0;
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        #found-items {
+            background: #1f1f1f;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            width: 80%;
+        }
+
+        .search-container {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-container input {
+            width: 50%; /* Further shortened search bar */
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+        }
+
+        .search-container button {
+            background-color: #E50914;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .item-count {
+            margin-top: 20px;
+            text-align: left;
+            width: 100%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            color: #ffffff;
+        }
+
+        th, td {
+            border: 1px solid #ff0000;
+            padding: 10px;
+            text-align: center; /* Centered text in table */
+        }
+
+        th {
+            background: #e3040f;
+            color: #ffffff;
+        }
+
+        .view-button {
+            background-color: #E50914;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 14px;
+            text-align: center; /* Centered button text */
+        }
+
+        .view-button:hover {
+            background-color: #b2060f;
+        }
+
+        .page-numbers {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .page-numbers button {
+            background-color: #E50914;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .page-numbers button:hover {
+            background-color: #b2060f;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #1f1f1f;
+            color: #ffffff;
+            text-align: center;
+            padding: 2px; /* Made footer smaller */
+            width: calc(100% - 200px); /* Adjusted width to stop at the end of the navigation box */
+            margin-left: auto; /* Move footer to the right */
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            bottom: 0;
+            right: 0; /* Align footer to the right */
+            z-index: 0; /* Ensure the footer is behind the navigation box */
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .disclaimer {
+            margin-top: 10px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <img src="https://i.imgur.com/HUd63i0.png" alt="Lost & Found Logo">
+        <div class="nav-item">
+            <img src="https://i.imgur.com/0vuNTWy.png" alt="Account Icon">
+            <a href="#account">Account</a>
+        </div>
+        <div class="nav-item">
+            <img src="https://i.imgur.com/XU1ThN1.png" alt="Dashboard Icon">
+            <a href="#dashboard">Dashboard</a>
+        </div>
+        <div class="nav-item">
+            <img src="https://i.imgur.com/9i5BtfC.png" alt="View Lost Items Icon">
+            <a href="#items">View Lost Items</a>
+        </div>
+        <div class="nav-item">
+            <img src="https://i.imgur.com/ozIJQUI.png" alt="Messaging Icon">
+            <a href="#messaging">Messaging</a>
+        </div>
+        <div class="nav-item">
+            <img src="https://i.imgur.com/HfxzqRt.png" alt="Report Missing Items Icon">
+            <a href="#report">Report Missing Items</a>
+        </div>
+        <div class="nav-item">
+            <img src="https://i.imgur.com/FzJctTI.png" alt="Logout Icon">
+            <a href="#logout">Log Out</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="dashboard-header">
+            View Lost Items
+        </div>
+
+        <section id="found-items">
+            <div class="search-container">
+                <input type="text" id="search-bar" placeholder="Search for items..." oninput="searchItems()">
+                <button onclick="searchItems()">Search</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Location</th>
+                        <th>Date Found</th>
+                        <th>Time Found</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="items-table-body">
+                    <tr>
+                        <td>Wallet</td>
+                        <td>Library</td>
+                        <td>March 1, 2025</td>
+                        <td>3:00 PM</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td>Umbrella</td>
+                        <td>Cafeteria</td>
+                        <td>March 2, 2025</td>
+                        <td>11:00 AM</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td>Keys</td>
+                        <td>Gym</td>
+                        <td>March 3, 2025</td>
+                        <td>4:30 PM</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td>Backpack</td>
+                        <td>Parking Lot</td>
+                        <td>March 4, 2025</td>
+                        <td>9:15 AM</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td>Phone</td>
+                        <td>Library</td>
+                        <td>March 5, 2025</td>
+                        <td>2:00 PM</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td>Notebook</td>
+                        <td>Classroom</td>
+                        <td>March 6, 2025</td>
+                        <td>10:00 AM</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td>Watch</td>
+                        <td>Gym</td>
+                        <td>March 7, 2025</td>
+                        <td>5:00 PM</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td>Headphones</td>
+                        <td>Library</td>
+                        <td>March 8, 2025</td>
+                        <td>1:00 PM</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td>Sunglasses</td>
+                        <td>Cafeteria</td>
+                        <td>March 9, 2025</td>
+                        <td>12:30 PM</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td>Water Bottle</td>
+                        <td>Gym</td>
+                        <td>March 10, 2025</td>
+                        <td>6:00 PM</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td>Hat</td>
+                        <td>Parking Lot</td>
+                        <td>March 11, 2025</td>
+                        <td>8:00 AM</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td>Scarf</td>
+                        <td>Classroom</td>
+                        <td>March 12, 2025</td>
+                        <td>9:30 AM</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="item-count">
+                Total Items: <span id="item-count">0</span>
+            </div>
+            <div class="page-numbers">
+                <button onclick="prevPage()">Previous</button>
+                <button onclick="nextPage()">Next</button>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p class="disclaimer"><strong>Disclaimer:</strong> All found items should be returned to the Lost & Found office. This platform serves only as a way to check if an item has been returned. Please do not use this site for any inappropriate posts.</p>
+        <p class="disclaimer">&copy; 2025 Campus Lost & Found. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        let currentPage = 1;
+        const itemsPerPage = 10;
+        const originalItems = [
+            { name: 'Wallet', location: 'Library', date: 'March 1, 2025', time: '3:00 PM' },
+            { name: 'Umbrella', location: 'Cafeteria', date: 'March 2, 2025', time: '11:00 AM' },
+            { name: 'Keys', location: 'Gym', date: 'March 3, 2025', time: '4:30 PM' },
+            { name: 'Backpack', location: 'Parking Lot', date: 'March 4, 2025', time: '9:15 AM' },
+            { name: 'Phone', location: 'Library', date: 'March 5, 2025', time: '2:00 PM' },
+            { name: 'Notebook', location: 'Classroom', date: 'March 6, 2025', time: '10:00 AM' },
+            { name: 'Watch', location: 'Gym', date: 'March 7, 2025', time: '5:00 PM' },
+            { name: 'Headphones', location: 'Library', date: 'March 8, 2025', time: '1:00 PM' },
+            { name: 'Sunglasses', location: 'Cafeteria', date: 'March 9, 2025', time: '12:30 PM' },
+            { name: 'Water Bottle', location: 'Gym', date: 'March 10, 2025', time: '6:00 PM' },
+            { name: 'Hat', location: 'Parking Lot', date: 'March 11, 2025', time: '8:00 AM' },
+            { name: 'Scarf', location: 'Classroom', date: 'March 12, 2025', time: '9:30 AM' }
+        ];
+
+        function searchItems() {
+            const searchTerm = document.getElementById('search-bar').value.toLowerCase();
+            const tableBody = document.getElementById('items-table-body');
+            tableBody.innerHTML = '';
+
+            const filteredItems = originalItems.filter(item => {
+                return item.name.toLowerCase().includes(searchTerm) ||
+                       item.location.toLowerCase().includes(searchTerm) ||
+                       item.date.toLowerCase().includes(searchTerm) ||
+                       item.time.toLowerCase().includes(searchTerm);
+            });
+
+            filteredItems.forEach(item => {
+                const row = createTableRow(item.name, item.location, item.date, item.time);
+                tableBody.appendChild(row);
+            });
+
+            document.getElementById('item-count').innerText = filteredItems.length;
+
+            if (searchTerm === '') {
+                updateTable();
+            }
+        }
+
+        function updateTable() {
+            const tableBody = document.getElementById('items-table-body');
+            tableBody.innerHTML = '';
+
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+
+            originalItems.slice(start, end).forEach(item => {
+                const row = createTableRow(item.name, item.location, item.date, item.time);
+                tableBody.appendChild(row);
+            });
+
+            document.getElementById('item-count').innerText = originalItems.length;
+        }
+
+        function createTableRow(name, location, date, time) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${name}</td>
+                <td>${location}</td>
+                <td>${date}</td>
+                <td>${time}</td>
+                <td><button class="view-button">View</button></td>
+            `;
+            row.querySelectorAll('td').forEach(td => {
+                td.style.textAlign = 'center';
+            });
+            return row;
+        }
+
+        function nextPage() {
+            const totalPages = Math.ceil(originalItems.length / itemsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                updateTable();
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                updateTable();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTable();
+        });
+    </script>
+</body>
+</html>
