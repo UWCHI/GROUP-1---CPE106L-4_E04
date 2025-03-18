@@ -1,3 +1,10 @@
+"""
+  LAB 04
+  PROGRAMMING PROBLEM 02
+
+  Explore the Tkinter.filedialog module to get the name of a text file
+"""
+
 import tkinter.filedialog as fd
 
 target = fd.askopenfilename()
