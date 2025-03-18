@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Lost & Found</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script> <!-- Replace 'your-kit-id' with your actual Font Awesome Kit ID -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #141414;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden; /* Remove horizontal scrollbar */
+        }
+
+        /* NAVIGATION */
+        .sidebar {
+            width: 200px;
+            background: #1f1f1f;
+            height: 100vh;
+            padding-top: 20px;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding-left: 20px;
+            transition: width 0.3s;
+            z-index: 1; /* Ensure the sidebar is above the footer */
+        }
+
+        .sidebar img {
+            max-width: 100px;
+            margin-bottom: 20px;
+        }
+
+        .nav-item {
+            width: 100%;
+            text-align: left;
+            padding: 15px 0;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-item img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            vertical-align: middle;
+            margin-top: 15px;
+        }
+
+        .nav-item a {
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-item:hover {
+            background: #E50914;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            margin-left: 200px;
+            padding: 0;
+            width: calc(100% - 200px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
+            transition: margin-left 0.3s, width 0.3s;
+        }
+
+        .dashboard-header {
+            background: #252321;
+            padding: 40px; /* Made header thicker */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            text-align: left;
+            padding-left: calc(5% + 50px); /* Added more padding to move text to the right */
+            width: 100%;
+            margin: 0;
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .claims-container {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            width: 80%;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .claim-box {
+            background: #1f1f1f;
+            padding: 15px;
+            border-radius: 8px;
+            width: calc(30% - 20px); /* Adjusted width for 3 boxes */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .claim-box h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+
+        .claim-box h4 {
+            margin: 10px 0;
+        }
+
+        .claim-box button {
+            background-color: #E50914;
+            color: #fff;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+        #found-items {
+            background: #1f1f1f;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            width: 75%; /* Made it slightly smaller */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            color: #ffffff;
+        }
+
+        th, td {
+            border: 1px solid #ff0000;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #e3040f;
+            color: #ffffff;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #1f1f1f;
+            color: #ffffff;
+            text-align: center;
+            padding: 2px; /* Made footer smaller */
+            width: 100%;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 0; /* Ensure the footer is behind the navigation box */
+            padding-left: 140px; /* Move text a little bit to the left */
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        /* BUTTON STYLES */
+        button {
+            background-color: #E50914;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+            border-radius: 10px;
+        }
+
+        button:hover {
+            background-color: #b2060f;
+        }
+
+        .disclaimer {
+            margin-top: 10px;
+            font-size: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 60px;
+            }
+
+            .sidebar img {
+                display: none;
+            }
+
+            .nav-item img {
+                margin-right: 0;
+            }
+
+            .nav-item a {
+                font-size: 0;
+            }
+
+            .main-content {
+                margin-left: 60px;
+                width: calc(100% - 60px);
+            }
+
+            .dashboard-header {
+                padding-left: 90px; /* Adjust padding-left for smaller screens */
+            }
+
+            .claim-box {
+                width: calc(100% - 40px);
+            }
+
+            footer {
+                width: 100%; /* Adjusted width for smaller screens */
+                margin-left: 0; /* Adjusted margin for smaller screens */
+                padding-left: 50px; /* Adjust padding-left for smaller screens */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard-header {
+                padding: 20px;
+                padding-left: 70px; /* Adjust padding-left for very small screens */
+                font-size: 20px;
+            }
+
+            .claim-box h1 {
+                font-size: 1.5em;
+            }
+
+            footer {
+                padding: 1px; /* Made footer smaller for very small screens */
+                padding-left: 30px; /* Adjust padding-left for very small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <img src="https://i.imgur.com/HUd63i0.png" alt="Lost & Found Logo">
+        <div class="nav-item">
+            <img src="https://i.imgur.com/0vuNTWy.png" alt="Account Icon">
+            <a href="#account">Account</a>
+        </div>
+        <div class="nav-item">
+            <img src="https://i.imgur.com/XU1ThN1.png" alt="Dashboard Icon">
+            <a href="#dashboard">Dashboard</a>
+        </div>
+        <div class="nav-item">
+            <img src="https://i.imgur.com/9i5BtfC.png" alt="View Lost Items Icon">
+            <a href="#items">View Lost Items</a>
+        </div>
+        <div class="nav-item">
+            <img src="https://i.imgur.com/ozIJQUI.png" alt="Messaging Icon">
+            <a href="#messaging">Messaging</a>
+        </div>
+        <div class="nav-item">
+            <img src="https://i.imgur.com/HfxzqRt.png" alt="Report Missing Items Icon">
+            <a href="#report">Report Missing Items</a>
+        </div>
+        <div class="nav-item">
+            <img src="https://i.imgur.com/FzJctTI.png" alt="Logout Icon">
+            <a href="#logout">Log Out</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="dashboard-header">
+            Dashboard
+        </div>
+
+        <div class="claims-container">
+            <section class="claim-box">
+                <h1>1</h1>
+                <h4>Your Claimed Items</h4>
+                <button>View</button>
+            </section>
+
+            <section class="claim-box">
+                <h1>2</h1>
+                <h4>User's Claimed Items</h4>
+                <button>View</button>
+            </section>
+
+            <section class="claim-box">
+                <h1>3</h1>
+                <h4>User's Pending Claims</h4>
+                <button>View</button>
+            </section>
+        </div>
+
+        <section id="found-items">
+            <h2>Recently Lost Items</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Location</th>
+                        <th>Date Found</th>
+                        <th>Time Found</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Wallet</td>
+                        <td>Library</td>
+                        <td>March 1, 2025</td>
+                        <td>3:00 PM</td>
+                        <td><button>View</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <footer>
+        <p class="disclaimer"><strong>Disclaimer:</strong> All found items should be returned to the Lost & Found office. This platform serves only as a way to check if an item has been returned. Please do not use this site for any inappropriate posts.</p>
+        <p class="disclaimer">&copy; 2025 Campus Lost & Found. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
