@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Lost & Found - Account</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script> <!-- Replace 'your-kit-id' with your actual Font Awesome Kit ID -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #141414;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden; /* Remove horizontal scrollbar */
+        }
+
+        /* NAVIGATION */
+        .sidebar {
+            width: 200px;
+            background: #1f1f1f;
+            height: 100vh;
+            padding-top: 20px;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding-left: 20px;
+            transition: width 0.3s;
+            z-index: 1; /* Ensure the sidebar is above the footer */
+        }
+
+        .sidebar img {
+            max-width: 100px;
+            margin-bottom: 20px;
+        }
+
+        .nav-item {
+            width: 100%;
+            text-align: left;
+            padding: 15px 0;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-item img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            vertical-align: middle;
+            margin-top: 15px;
+        }
+
+        .nav-item a {
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-item:hover {
+            background: #E50914;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            margin-left: 200px;
+            padding: 0;
+            width: calc(100% - 200px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
+            transition: margin-left 0.3s, width 0.3s;
+        }
+
+        .account-header {
+            background: #252321;
+            padding: 40px; /* Made header thicker */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            text-align: left;
+            padding-left: calc(5% + 50px); /* Added more padding to move text to the right */
+            width: 100%;
+            margin: 0;
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .profile-container {
+            background: #1f1f1f;
+            margin-top: 2%;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .profile-form {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; /* Center the form contents */
+        }
+
+        .profile-form label {
+            margin-bottom: 8px;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .profile-form .form-group {
+            width: calc(50% - 20px);
+            padding: 0 10px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+
+        .profile-form input, .profile-form select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            background: #2e2e2e;
+            border: 1px solid #3a3a3a;
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .profile-form .button-container {
+            display: flex;
+            justify-content: center; /* Center the buttons */
+            width: 100%;
+            gap: 20px;
+        }
+
+        .profile-form button, .profile-form .change-password-link {
+            background-color: #E50914;
+            color: #fff;
+            padding: 10px; /* Made the button smaller */
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+            border-radius: 10px;
+            width: calc(50% - 10px); /* Set width to match Save Changes button */
+            box-sizing: border-box;
+            text-align: center;
+            height: 40px; /* Adjust the height as needed */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px; /* Adjust the font size as needed */
+        }
+
+        .profile-form button:hover, .profile-form .change-password-link:hover {
+            background-color: #b2060f;
+        }
+
+        .profile-form .change-password-link {
+            text-decoration: none;
+        }
+
+        .profile-form .save-changes-button {
+            width: calc(50% - 10px); /* Reverted the width to be larger */
+        }
+
+        h2 {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 20px;
+            font-size: 20px;
+            border-bottom: 2px solid #3a3a3a;
+            padding-bottom: 10px;
+        }
+
+        /* MODAL STYLES */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: #1f1f1f;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 500px; /* Adjusted max-width */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+        }
+
+        .modal-content label {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            background: #2e2e2e;
+            border: 1px solid #3a3a3a;
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .modal-content button {
+            background-color: #E50914;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+            border-radius: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .modal-content button:hover {
+            background-color: #b2060f;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+
+        @media screen and (max-width: 768px) {
+            .sidebar {
+                width: 60px;
+            }
+
+            .sidebar img {
+                display: none;
+            }
+
+            .nav-item img {
+                margin-right: 0;
+            }
+
+            .nav-item a {
+                font-size: 0;
+            }
+
+            .main-content {
+                margin-left: 60px;
+                width: calc(100% - 60px);
+            }
+
+            .account-header {
+                padding-left: 90px; /* Adjust padding-left for smaller screens */
+            }
+
+            .profile-container {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .profile-form .form-group {
+                width: 100%;
+            }
+
+            .profile-form .button-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .profile-form button, .profile-form .change-password-link {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .modal-content {
+                width: 90%;
+            }
+
+            .modal-content h2 {
+                font-size: 18px;
+            }
+
+            .modal-content label,
+            .modal-content input,
+            .modal-content button {
+                font-size: 14px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .nav-item img {
+                width: 15px;
+                height: 15px;
+                margin-right: 5px;
+            }
+
+            .nav-item a {
+                font-size: 16px;
+            }
+
+            .account-header {
+                font-size: 20px;
+                padding: 10px;
+            }
+
+            .profile-form label {
+                font-size: 14px;
+            }
+
+            .profile-form input, .profile-form select {
+                font-size: 12px;
+            }
+
+            .profile-form button {
+                padding: 6px;
+            }
+        }
+    </style>
+    <script>
+        function togglePasswordVisibility() {
+            var passwordInput = document.getElementById('current-password');
+            var passwordIcon = document.getElementById('password-icon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordIcon.classList.remove('fa-eye');
+                passwordIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                passwordIcon.classList.remove('fa-eye-slash');
+                passwordIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Modal functionality
+        function openModal() {
+            document.getElementById('changePasswordModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('changePasswordModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            var modal = document.getElementById('changePasswordModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="sidebar">
+        <img src="https://i.imgur.com/HUd63i0.png" alt="Lost & Found Logo">
+        <div class="nav-item">
+            <img src="https://i.imgur.com/0vuNTWy.png" alt="Account Icon">
+            <a href="account.html">Account</a>
+        </div>
+        <div class="nav-item">
+            <img src="https://i.imgur.com/XU1ThN1.png" alt="Dashboard Icon">
+            <a href="dashboard.html">Dashboard</a>
+        </div>
+        <div class="nav-item">
+            <img src="https://i.imgur.com/9i5BtfC.png" alt="View Lost Items Icon">
+            <a href="items.html">View Lost Items</a>
+        </div>
+        <div class="nav-item">
+            <img src="https://i.imgur.com/ozIJQUI.png" alt="Messaging Icon">
+            <a href="messaging.html">Messaging</a>
+        </div>
+        <div class="nav-item">
+            <img src="https://i.imgur.com/HfxzqRt.png" alt="Report Missing Items Icon">
+            <a href="report.html">Report Missing Items</a>
+        </div>
+        <div class="nav-item">
+            <img src="https://i.imgur.com/FzJctTI.png" alt="Logout Icon">
+            <a href="#logout">Log Out</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="account-header">
+            Account
+        </div>
+
+        <div class="profile-container">
+            <form class="profile-form">
+                <h2>Basic Information</h2>
+
+                <div class="form-group">
+                    <label for="full-name">Full Name</label>
+                    <input type="text" id="full-name" name="full-name" placeholder="Enter Full Name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter Email Address">
+                </div>
+                
+                <div class="form-group">
+                    <label for="student-number">Student Number</label>
+                    <input type="text" id="student-number" name="student-number" placeholder="Enter Student Number">
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select id="gender" name="gender">
+                        <option value="">Select Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option> <!-- Added "Other" option -->
+                    </select>
+                </div>
+
+                <div class="button-container">
+                    <button type="button" class="change-password-link" onclick="openModal()">Change password</button>
+                </div>
+
+                <h2>Contact Information</h2>
+
+                <div class="form-group">
+                    <label for="mailing-address">Mailing Address</label>
+                    <input type="text" id="mailing-address" name="mailing-address" placeholder="Add mailing address">
+                </div>
+                <div class="form-group">
+                    <label for="phone-number">Phone Number</label>
+                    <input type="text" id="phone-number" name="phone-number" placeholder="Add phone number">
+                </div>
+                
+                <div class="button-container">
+                    <button type="submit" class="save-changes-button">Save Changes</button> <!-- Added class save-changes-button for targeted styling -->
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div id="changePasswordModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <form class="change-password-form">
+                <h2>Change Password</h2>
+
+                <label for="current-password">Current Password</label>
+                <input type="password" id="current-password" name="current-password" placeholder="Enter Current Password">
+
+                <label for="new-password">New Password</label>
+                <input type="password" id="new-password" name="new-password" placeholder="Enter New Password">
+
+                <label for="confirm-password">Confirm New Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm New Password">
+
+                <button type="submit">Change Password</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
