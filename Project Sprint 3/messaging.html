@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Lost & Found - Messaging</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script> <!-- Replace 'your-kit-id' with your actual Font Awesome Kit ID -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #141414;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden; /* Remove horizontal scrollbar */
+        }
+
+        /* NAVIGATION */
+        .sidebar {
+            width: 200px;
+            background: #1f1f1f;
+            height: 100vh;
+            padding-top: 20px;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding-left: 20px;
+            transition: width 0.3s;
+            z-index: 1; /* Ensure the sidebar is above the footer */
+        }
+
+        .sidebar img {
+            max-width: 100px;
+            margin-bottom: 20px;
+        }
+
+        .nav-item {
+            width: 100%;
+            text-align: left;
+            padding: 15px 0;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-item img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            vertical-align: middle;
+            margin-top: 15px;
+        }
+
+        .nav-item a {
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-item:hover {
+            background: #E50914;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            margin-left: 200px;
+            padding: 0;
+            width: calc(100% - 200px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
+            transition: margin-left 0.3s, width 0.3s;
+        }
+
+        .messaging-header {
+            background: #252321;
+            padding: 40px; /* Made header thicker */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            text-align: left;
+            padding-left: calc(5% + 50px); /* Added more padding to move text to the right */
+            width: 100%;
+            margin: 0;
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .messaging-container {
+            background: #1f1f1f;
+            padding: 30px;
+            margin-top: 2%;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding-right: 10px;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+
+        .message.admin {
+            background: #800000; /* Maroon color for the person messaging you */
+            align-self: flex-start;
+        }
+
+        .message.student {
+            background: #2e2e2e; /* Dark gray for you */
+            align-self: flex-end;
+        }
+
+        .message-input-container {
+            display: flex;
+            align-items: center;
+            border-top: 1px solid #3a3a3a;
+            padding-top: 20px;
+        }
+
+        .message-input {
+            flex-grow: 1;
+            padding: 15px;
+            background: #2e2e2e;
+            border: 1px solid #3a3a3a;
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: 16px;
+            box-sizing: border-box;
+            margin-right: 10px;
+        }
+
+        .send-button {
+            background-color: #E50914;
+            color: #fff;
+            padding: 15px 20px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        .send-button:hover {
+            background-color: #b2060f;
+        }
+
+        @media screen and (max-width: 768px) {
+            .sidebar {
+                width: 60px;
+            }
+
+            .sidebar img {
+                display: none;
+            }
+
+            .nav-item img {
+                margin-right: 0;
+            }
+
+            .nav-item a {
+                font-size: 0;
+            }
+
+            .main-content {
+                margin-left: 60px;
+                width: calc(100% - 60px);
+            }
+
+            .messaging-header {
+                padding-left: 90px; /* Adjust padding-left for smaller screens */
+            }
+
+            .messaging-container {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .message {
+                max-width: 100%;
+            }
+
+            .message-input-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .message-input {
+                margin-bottom: 10px;
+                margin-right: 0;
+            }
+
+            .send-button {
+                width: 100%;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .nav-item img {
+                width: 15px;
+                height: 15px;
+                margin-right: 5px;
+            }
+
+            .nav-item a {
+                font-size: 16px;
+            }
+
+            .messaging-header {
+                font-size: 20px;
+                padding: 20px;
+                padding-left: 70px; /* Adjust padding-left for very small screens */
+            }
+
+            .message-input {
+                font-size: 14px;
+            }
+
+            .send-button {
+                padding: 10px;
+                font-size: 14px;
+            }
+        }
+    </style>
+    <script>
+        function sendMessage() {
+            const messageInput = document.getElementById('message-input');
+            const messageText = messageInput.value.trim();
+
+            if (messageText) {
+                const messageContainer = document.createElement('div');
+                messageContainer.className = 'message student';
+                messageContainer.textContent = messageText;
+
+                const messages = document.getElementById('messages');
+                messages.appendChild(messageContainer);
+                messages.scrollTop = messages.scrollHeight;
+
+                messageInput.value = '';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const messageInput = document.getElementById('message-input');
+            messageInput.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    sendMessage();
+                }
+            });
+
+            const sendButton = document.getElementById('send-button');
+            sendButton.addEventListener('click', sendMessage);
+        });
+    </script>
+</head>
+<body>
+    <div class="sidebar">
+        <img src="https://i.imgur.com/HUd63i0.png" alt="Lost & Found Logo">
+        <div class="nav-item">
+            <img src="https://i.imgur.com/0vuNTWy.png" alt="Account Icon">
+            <a href="account.html">Account</a>
+        </div>
+        <div class="nav-item">
+            <img src="https://i.imgur.com/XU1ThN1.png" alt="Dashboard Icon">
+            <a href="dashboard.html">Dashboard</a>
+        </div>
+        <div class="nav-item">
+            <img src="https://i.imgur.com/9i5BtfC.png" alt="View Lost Items Icon">
+            <a href="items.html">View Lost Items</a>
+        </div>
+        <div class="nav-item">
+            <img src="https://i.imgur.com/ozIJQUI.png" alt="Messaging Icon">
+            <a href="messaging.html">Messaging</a>
+        </div>
+        <div class="nav-item">
+            <img src="https://i.imgur.com/HfxzqRt.png" alt="Report Missing Items Icon">
+            <a href="report.html">Report Missing Items</a>
+        </div>
+        <div class="nav-item">
+            <img src="https://i.imgur.com/FzJctTI.png" alt="Logout Icon">
+            <a href="#logout">Log Out</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="messaging-header">
+            Messaging
+        </div>
+
+        <div class="messaging-container">
+            <div id="messages" class="messages">
+                <!-- Messages will appear here -->
+            </div>
+            <div class="message-input-container">
+                <input type="text" id="message-input" class="message-input" placeholder="Type your message...">
+                <button id="send-button" class="send-button">Send</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
