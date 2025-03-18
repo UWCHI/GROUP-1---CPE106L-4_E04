@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Missing Items - Campus Lost & Found</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script> <!-- Replace 'your-kit-id' with your actual Font Awesome Kit ID -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #141414;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden; /* Remove horizontal scrollbar */
+        }
+
+        /* NAVIGATION */
+        .sidebar {
+            width: 200px; /* Thinner width */
+            background: #1f1f1f;
+            height: 100vh;
+            padding-top: 20px;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding-left: 20px;
+            transition: width 0.3s;
+            z-index: 1; /* Ensure the sidebar is above the footer */
+        }
+
+        .sidebar img {
+            max-width: 100px;
+            margin-bottom: 20px;
+        }
+
+        .nav-item {
+            width: 100%;
+            text-align: left;
+            padding: 15px 0;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-item img {
+            width: 20px; /* Smaller size */
+            height: 20px; /* Smaller size */
+            margin-right: 10px;
+            vertical-align: middle; /* Align icon with text */
+            margin-top: 15px; /* Move the icon lower */
+        }
+
+        .nav-item a {
+            color: white;
+            text-decoration: none;
+            font-size: 20px; /* Increased font size */
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-item:hover {
+            background: #E50914;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            margin-left: 200px; /* Adjusted margin to match new sidebar width */
+            padding: 0;
+            width: calc(100% - 200px); /* Adjusted width to match new sidebar width */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+        .dashboard-header {
+            background: #252321;
+            padding: 40px; /* Made header thicker */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            text-align: left;
+            padding-left: calc(5% + 50px); /* Added more padding to move text to the right */
+            width: 100%;
+            margin: 0;
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .form-container {
+            background: #1f1f1f;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            width: 60%;
+        }
+
+        .form-container h2 {
+            margin: 0 0 20px 0;
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background: #333;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .form-group button {
+            background-color: #E50914;
+            color: #fff;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px; /* Added curved corners */
+            font-size: 16px;
+        }
+
+        .form-group button:hover {
+            background-color: #b2060f;
+        }
+
+        .form-group img {
+            margin-top: 10px;
+            max-width: 200px; /* Smaller width */
+            max-height: 200px; /* Smaller height */
+            border-radius: 8px;
+        }
+
+        .remove-button {
+            background-color: #b2060f;
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 14px;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .remove-button:hover {
+            background-color: #8e040a;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #1f1f1f;
+            color: #ffffff;
+            text-align: center;
+            padding: 2px; /* Made footer smaller */
+            width: calc(100% - 200px); /* Adjusted width to stop at the end of the navigation box */
+            margin-left: auto; /* Move footer to the right */
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            bottom: 0;
+            right: 0; /* Align footer to the right */
+            z-index: 0; /* Ensure the footer is behind the navigation box */
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .disclaimer {
+            margin-top: 10px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <img src="https://i.imgur.com/HUd63i0.png" alt="Lost & Found Logo">
+        <div class="nav-item">
+            <img src="https://i.imgur.com/0vuNTWy.png" alt="Account Icon">
+            <a href="#account">Account</a>
+        </div>
+        <div class="nav-item">
+            <img src="https://i.imgur.com/XU1ThN1.png" alt="Dashboard Icon">
+            <a href="#dashboard">Dashboard</a>
+        </div>
+        <div class="nav-item">
+            <img src="https://i.imgur.com/9i5BtfC.png" alt="View Lost Items Icon">
+            <a href="#items">View Lost Items</a>
+        </div>
+        <div class="nav-item">
+            <img src="https://i.imgur.com/ozIJQUI.png" alt="Messaging Icon">
+            <a href="#messaging">Messaging</a>
+        </div>
+        <div class="nav-item">
+            <img src="https://i.imgur.com/HfxzqRt.png" alt="Report Missing Items Icon">
+            <a href="#report">Report Missing Items</a>
+        </div>
+        <div class="nav-item">
+            <img src="https://i.imgur.com/FzJctTI.png" alt="Logout Icon">
+            <a href="#logout">Log Out</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="dashboard-header">
+            Report Missing Items
+        </div>
+
+        <div class="form-container">
+            <h2>Report a Missing Item</h2>
+            <form>
+                <div class="form-group">
+                    <label for="item-name">Item Name</label>
+                    <input type="text" id="item-name" name="item-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="location">Last Known Location</label>
+                    <input type="text" id="location" name="location" required>
+                </div>
+                <div class="form-group">
+                    <label for="date">Date Lost</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="time">Time Found</label>
+                    <input type="time" id="time" name="time" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="image">Upload Image (JPEG or PNG only)</label>
+                    <input type="file" id="image" name="image" accept="image/jpeg, image/png" required>
+                    <img id="image-preview" src="#" alt="Image Preview" style="display: none;">
+                    <button type="button" class="remove-button" id="remove-image" style="display: none;">Remove Image</button>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p class="disclaimer"><strong>Disclaimer:</strong> All found items should be returned to the Lost & Found office. This platform serves only as a way to report and check if an item has been returned. Please do not use this site for any inappropriate posts.</p>
+        <p class="disclaimer">&copy; 2025 Campus Lost & Found. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.getElementById('image').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('image-preview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    document.getElementById('remove-image').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById('remove-image').addEventListener('click', function() {
+            const input = document.getElementById('image');
+            input.value = '';
+            const preview = document.getElementById('image-preview');
+            preview.src = '#';
+            preview.style.display = 'none';
+            this.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
