@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardinal Lost & Found</title>
+    <style>
+        body {
+            background-color: #1f1f1f;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .auth-container {
+            background-color: #2c2c2c;
+            padding: 20px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 320px;
+            text-align: center;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+        }
+        .auth-toggle {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 8px;
+        }
+        .auth-toggle button {
+            background: none;
+            border: none;
+            color: #ccc;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 8px;
+            width: 50%;
+            transition: color 0.3s, font-weight 0.3s;
+        }
+        .auth-toggle .active {
+            color: #d83612;
+            font-weight: bold;
+            border-bottom: 1px solid #d83612;
+        }
+        .auth-form input, .auth-form select, .auth-form button {
+            width: calc(100% - 20px);
+            padding: 8px;
+            margin: 8px 0;
+            border-radius: 6px;
+            border: none;
+            text-align: left;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 12px;
+        }
+        .auth-form input, .auth-form select {
+            background-color: #444;
+            color: white;
+        }
+        .auth-form select{
+            width: 100%;
+        }
+        .auth-form button {
+            background-color: #d83612;
+            color: white;
+            width: 100%;
+            text-align: center;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .auth-form button:hover {
+            background-color: #b02d0f;
+        }
+        .error {
+            color: red;
+            font-size: 10px;
+            height: 12px;
+            text-align: left;
+        }
+        .hidden {
+            display: none;
+        }
+        @media (max-width: 600px) {
+            .auth-container {
+                width: 85%;
+            }
+        }
+        .logo-container {
+            width: 100%;
+            max-width: 320px;
+            text-align: center;
+        }
+        .logo-container img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <header class="logo-container">
+        <img src="https://i.imgur.com/HUd63i0.png" alt="Lost & Found Logo">
+    </header>
+
+    <div class="auth-container">
+        <div class="auth-toggle">
+            <button id="login-btn" class="active" onclick="toggleAuth('login')">Signin</button>
+            <button id="register-btn" onclick="toggleAuth('register')">Register</button>
+        </div>
+
+        <div id="login-form" class="auth-form">
+            <h3>Login to Dashboard</h3>
+            <input type="email" id="login-email" placeholder="Email" required>
+            <p class="error" id="login-email-error"></p>
+            <input type="password" id="login-password" placeholder="Password" required>
+            <p class="error" id="login-password-error"></p>
+            <button onclick="login()">Log in</button>
+        </div>
+        
+        <div id="register-form" class="auth-form hidden">
+            <h3>Create an Account</h3>
+            <input type="text" id="student-number" placeholder="Student Number" required>
+            <p class="error" id="student-number-error"></p>
+            <select id="department">
+                <option value="">Select Department | Strand</option>
+                <option value="SOIT">SOIT</option>
+                <option value="ETYSBM">ETYSBM</option>
+                <option value="ARIDBE">ARIDBE</option>
+                <option value="CEGE">CEGE</option>
+                <option value="CBMES">CBMES</option>
+                <option value="EECE">EECE</option>
+                <option value="IE-EMG">IE-EMG</option>
+                <option value="ME">ME</option>
+                <option value="MCM">MCM</option>
+                <option value="SHS">SHS</option>
+                
+            </select>
+            <select id="user-level">
+                <option value="">Select User Level</option>
+                <option value="4th Year">4th Year</option>
+                <option value="3rd Year">3rd Year</option>
+                <option value="2nd Year">2nd Year</option>
+                <option value="1st Year">1st Year</option>
+                <option value="Grade 12">Grade 12</option>
+                <option value="Grade 11">Grade 11</option>
+            </select>
+            <input type="text" id="first-name" placeholder="First Name" required>
+            <input type="text" id="middle-initial" placeholder="M.I.">
+            <input type="text" id="last-name" placeholder="Last Name" required>
+            <input type="text" id="suffix" placeholder="Suffix (Optional)">
+            <input type="email" id="school-email" placeholder="School Email" required>
+            <p class="error" id="school-email-error"></p>
+            <input type="password" id="register-password" placeholder="Password" required>
+            <p class="error" id="password-error"></p>
+            <input type="password" id="confirm-password" placeholder="Confirm Password" required>
+            <p class="error" id="confirm-password-error"></p>
+            <button onclick="register()">Register</button>
+        </div>
+    </div>
+    
+    <script>
+        function toggleAuth(type) {
+            document.getElementById('login-form').classList.toggle('hidden', type !== 'login');
+            document.getElementById('register-form').classList.toggle('hidden', type !== 'register');
+            document.getElementById('login-btn').classList.toggle('active', type === 'login');
+            document.getElementById('register-btn').classList.toggle('active', type === 'register');
+        }
+      
+        function validatePassword(password) {
+            return password.length >= 8 && /[A-Z]/.test(password) && /\d/.test(password);
+        }
+
+        function login() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            document.getElementById('login-email-error').textContent = email ? '' : 'Email is required';
+            document.getElementById('login-password-error').textContent = password ? '' : 'Password is required';
+
+            if (email === "admin@mapua.edu.ph" && password === "admin123") {
+                alert("Login successful!");
+                window.location.href = "dashboard.html";
+            } else {
+                alert("Invalid email or password!");
+            }
+        }
+
+        function register() {
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            document.getElementById('password-error').textContent = validatePassword(password) ? '' : 'Password must be at least 8 characters, contain an uppercase letter and a number';
+            document.getElementById('confirm-password-error').textContent = password === confirmPassword ? '' : 'Passwords do not match';
+        }
+    </script>
+</body>
+</html>
